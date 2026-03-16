@@ -5,7 +5,7 @@ import { PrimaryButton } from "./Button"
 export const Appbar = () => {
     const session = useSession();
     return <div className="border-b px-2 py-2 flex justify-between">
-        <div>
+        <div className="text-xl font-bold flex flex-col justify-center">
             C-DEX 
         </div>
 

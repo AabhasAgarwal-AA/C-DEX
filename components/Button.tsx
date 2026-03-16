@@ -1,11 +1,30 @@
-"use client"; 
+"use client";
+import React from "react";
+
+ 
 
 export const PrimaryButton = ({ children, onClick}: {
     children: React.ReactNode, 
     onClick: () => void 
 }) => {
-    return <button onClick={onClick} type="button" className="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+    return <button onClick={onClick} type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
         {children}
+    </button>
+
+}
+
+export const SecondaryButton = ({children, onClick, prefix}: {
+    children: React.ReactNode, 
+    onClick: () => void, 
+    prefix?: React.ReactNode
+}) => {
+    return <button onClick={onClick} type="button" className="text-white bg-blue-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-6 py-3 me-2 mb-2 flex">
+        <div>
+            {prefix}
+        </div>
+        <div>
+            {children}
+        </div>
     </button>
 
 }
