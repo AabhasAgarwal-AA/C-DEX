@@ -1,8 +1,10 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { PrimaryButton } from "./Button";
+import { useEffect, useState } from "react";
 
-export const ProfileCard = () => {
+export const ProfileCard = ({publicKey}: {publicKey: string}) => {
 
     const session = useSession();
     const router = useRouter();
@@ -21,14 +23,44 @@ export const ProfileCard = () => {
     return <div className="pt-8 flex justify-center">
         <div className="max-w-4xl bg-white rounded shadow w-full p-12">
             <Greeting image={session.data?.user?.image ?? ""} name={session.data?.user?.name ?? ""} />
-            <Assets />
+            <Assets publicKey={publicKey} />
+            {/* {JSON.stringify(session.data.user)}; */}
         </div>
     </div>
 }
 
-function Assets() {
+function Assets({ publicKey }: { publicKey: string }) {
+    const [copied, setCopied] = useState(false);
+    useEffect(() => {
+        if(copied){
+            let timeout = setTimeout(() => {
+                setCopied(false)
+            }, 3000);
+            
+            return () => {
+                clearTimeout(timeout); 
+            }
+        }
+
+    }, [copied]);
     return <div className="text-slate-">
         Account Asset
+        <br />
+        <div className="flex justify-between">
+            <div>
+                
+            </div>
+
+            <div>
+                <PrimaryButton onClick={() => {
+                    setCopied(true)
+                    navigator.clipboard.writeText(publicKey)
+                }} >
+                    {copied ? "Copied" : "Your Wallrt Address"}
+                </PrimaryButton>
+
+            </div>
+        </div>
     </div>
 }
 

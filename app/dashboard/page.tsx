@@ -23,12 +23,13 @@ async function getUserBalance(){
 
 export default async function() {
     const userWallet = await getUserBalance();
-    if(userWallet.error){
+    if(userWallet.error || !userWallet.userWallet){
         return <div>
             No Solana wallet found
         </div>
     }
+
    return <div>
-        <ProfileCard />
+        <ProfileCard publicKey={userWallet.userWallet?.publicKey} />
    </div>
 }
