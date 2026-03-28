@@ -1,35 +1,35 @@
-import { ProfileCard } from "@/components/ProfileCard";
+import { ProfileCard } from "@/app/components/ProfileCard";
 import db from "@/app/db";
 import { authConfig } from "../lib/auth";
 import { getServerSession } from "next-auth";
 
-async function getUserBalance(){
+async function getUserBalance() {
     const session = await getServerSession(authConfig);
     const userWallet = await db.solWallet.findFirst({
         where: {
-            userId: session?.user?.uid 
-        }, 
+            userId: session?.user?.uid
+        },
         select: {
             publicKey: true
         }
-    }); 
-    if(!userWallet){
+    });
+    if (!userWallet) {
         return {
             error: "No Solana wallet found associated to the user"
         }
     }
-    return {error: null, userWallet}; 
+    return { error: null, userWallet };
 }
 
-export default async function() {
+export default async function () {
     const userWallet = await getUserBalance();
-    if(userWallet.error || !userWallet.userWallet){
+    if (userWallet.error || !userWallet.userWallet) {
         return <div>
             No Solana wallet found
         </div>
     }
 
-   return <div>
+    return <div>
         <ProfileCard publicKey={userWallet.userWallet?.publicKey} />
-   </div>
+    </div>
 }

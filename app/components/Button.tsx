@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 
- 
-
 export const PrimaryButton = ({ children, onClick}: {
     children: React.ReactNode, 
     onClick: () => void 

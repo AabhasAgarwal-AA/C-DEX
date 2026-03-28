@@ -19,12 +19,10 @@ export async function GET(req: NextRequest){
         usdBalance: (balances[index] * Number(token.price)).toFixed(2)
     }));
 
-
     return NextResponse.json({
         tokens, 
         totalBalance: tokens.reduce((acc, val) => acc + Number(val.usdBalance), 0).toFixed(2)
     });
-
 } 
 
 async function getAccountBalance(token: {
