@@ -13,6 +13,7 @@ export interface session extends Session {
 }
 
 export const authConfig = {
+    secret: process.env.NEXTAUTH_SECRET || 'secr3t',
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID ?? "",

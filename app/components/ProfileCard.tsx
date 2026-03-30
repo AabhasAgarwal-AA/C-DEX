@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { TabButton } from "./Button";
 import { useState } from "react";
 import { Swap } from "./Swap";
@@ -45,7 +45,7 @@ export const ProfileCard = ({publicKey}: {publicKey: string}) => {
 
             {/* {JSON.stringify(session.data.user)}; */}
             <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}>  <Assets publicKey={publicKey} />  </div>
-            <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}>  <Swap publicKey={publicKey} />  </div>
+            <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}>  <Swap publicKey={publicKey} />  </div>
 
         </div>
     </div>

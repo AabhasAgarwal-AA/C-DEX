@@ -4,7 +4,7 @@ export function TokenList({tokens}: {
     tokens: TokenWithBalance[]
 }){
     return <div>
-        {tokens.map(t => <TokenRow token={t} />)}
+        {tokens.map(t => <TokenRow token={t} key={t.name} />)}
     </div>
 }
 

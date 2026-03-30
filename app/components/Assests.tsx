@@ -47,7 +47,7 @@ export
                     setCopied(true)
                     navigator.clipboard.writeText(publicKey)
                 }} >
-                    {copied ? "Copied" : "Your Wallrt Address"}
+                    {copied ? "Copied" : "Your Wallet Address"}
                 </PrimaryButton>
             </div>
         </div>
