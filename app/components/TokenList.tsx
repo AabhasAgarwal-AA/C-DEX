@@ -13,17 +13,21 @@ function TokenRow({token}: {
 }) {
     return <div className="flex justify-between">
         <div className="flex">
-            <img src={token.image} className="h-10 w-10 rounded-full mr-2" />
+            <div>
+                <img src={token.image} className="h-10 w-10 rounded-full mr-2" />
+            </div>
+
+            <div>
+                <div className="font-bold">
+                    {token.name}
+                </div>
+                <div className="font-slim">
+                    1 {token.name} = ~${token.price}
+                </div>
+            </div>
         </div>
 
         <div>
-            <div className="font-bold">
-                {token.name}
-            </div>
-            <div className="font-slim">
-                1 {token.name} = ~${token.price}
-            </div>
-
             <div>
                 <div className="font-bold flex justify-end">
                     {token.usdBalance}
@@ -32,6 +36,6 @@ function TokenRow({token}: {
                     {token.balance}
                 </div>
             </div>
-        </div>   
-    </div>
+        </div>
+    </div>   
 }

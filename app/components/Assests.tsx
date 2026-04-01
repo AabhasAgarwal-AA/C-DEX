@@ -1,14 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useTokens } from "../api/hooks/useTokens";
+import { TokenWithBalance, useTokens } from "../api/hooks/useTokens";
 import { PrimaryButton } from "./Button";
 import { TokenList } from "./TokenList";
 
 export
-    function Assets({ publicKey }: { publicKey: string }) {
+    function Assets({ publicKey, tokenBalances, loading }: { 
+        publicKey: string, 
+        tokenBalances: {
+            totalBalance: number,
+            tokens: TokenWithBalance[]
+        } | null, 
+        loading: boolean
+    }) {
     const [copied, setCopied] = useState(false);
 
-    const { tokenBalances, loading } = useTokens(publicKey);
 
     useEffect(() => {
         if (copied) {

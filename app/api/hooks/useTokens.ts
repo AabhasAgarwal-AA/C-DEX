@@ -23,10 +23,6 @@ export function useTokens(address: string) {
         })
     }, []);
 
-
-    
-
-
     return {
         loading, tokenBalances
     }

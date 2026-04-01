@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Swap } from "./Swap";
 import { Assets } from "./Assests";
 import { Greeting } from "./Greeting";
+import { useTokens } from "../api/hooks/useTokens";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"; 
 const tabs: {id: Tab, name: string}[] = [
@@ -21,6 +22,7 @@ export const ProfileCard = ({publicKey}: {publicKey: string}) => {
     const session = useSession();
     const router = useRouter();
     const [selectedTab, setSelectedTab] = useState<Tab>("tokens");
+    const { tokenBalances, loading } = useTokens(publicKey);
 
     if(session.status === "loading"){
         return <div>
@@ -44,9 +46,9 @@ export const ProfileCard = ({publicKey}: {publicKey: string}) => {
             </div>
 
             {/* {JSON.stringify(session.data.user)}; */}
-            <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}>  <Assets publicKey={publicKey} />  </div>
-            <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}>  <Swap publicKey={publicKey} />  </div>
-
+            <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}><Assets tokenBalances={tokenBalances} loading={loading} publicKey={publicKey} /></div>
+        <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}><Swap tokenBalances={tokenBalances} publicKey={publicKey} /></div>  
+        
         </div>
     </div>
 }
