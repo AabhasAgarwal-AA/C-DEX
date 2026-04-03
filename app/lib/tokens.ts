@@ -17,8 +17,8 @@ export let SUPPORTED_TOKENS: TokenDetails[] = [{
     decimals: 9
 }, {
     name: "USDC",
-    // mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // mainnet mint
-    mint: "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU", // devnet mint 
+    mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // mainnet mint
+    // mint: "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU", // devnet mint 
     native: false,
     price: "1",
     image: "https://coin-images.coingecko.com/coins/images/6319/large/USDC.png?1769615602",
