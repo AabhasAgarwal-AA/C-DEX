@@ -18,6 +18,7 @@ export function Swap({publicKey, tokenBalances} :{
     const [baseAmount, setBaseAmount] = useState<string>("");
     const [quoteAmount, setQuoteAmount] = useState<string>("");
     const [fetchingQuote, setFetchingQuote] = useState(false);
+    const [quoteRespose, setQuoteResponse] = useState(null); 
 
     useEffect(() => {
         if (!baseAmount || isNaN(Number(baseAmount))) {
@@ -32,9 +33,8 @@ export function Swap({publicKey, tokenBalances} :{
 
                 axios.get(`https://lite-api.jup.ag/swap/v1/quote?inputMint=${baseAsset.mint}&outputMint=${quoteAsset.mint}&amount=${amount}&slippageBps=50`).then(res => {
                     setQuoteAmount((Number(res.data.outAmount) / 10 ** quoteAsset.decimals).toString());
-                    
+                    setQuoteResponse(res.data);
                 }); 
-
             } catch (err) {
                 console.error("Quote error:", err);
                 setQuoteAmount("");
@@ -100,8 +100,18 @@ export function Swap({publicKey, tokenBalances} :{
         />
 
         <div className="flex justify-end pt-4">
-            <PrimaryButton onClick={() => {
-
+            <PrimaryButton onClick={ async () => {
+                try{
+                    const res = await axios.post("/api/swap", {
+                        quoteRespose
+                    }); 
+                    if(res.data.txnId){
+                        alert("Swap done");
+                    }
+                } catch (error) {
+                    console.log(error); 
+                    alert("Error while sending the transaction")
+                }
             }}>
                 {fetchingQuote ? (
                     <div className="flex items-center">

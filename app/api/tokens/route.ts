@@ -43,8 +43,8 @@ async function getAccountBalance(token: {
 
     try {
         const account = await getAccount(connection, ata);
-        const mint = await getMint(connection, new PublicKey(token.mint));
-        return Number(account.amount) / (10 ** mint.decimals);
+        // const mint = await getMint(connection, new PublicKey(token.mint));
+        return Number(account.amount) / (10 ** token.decimals);
 
     } catch (error) {
         if (error instanceof TokenAccountNotFoundError) {
