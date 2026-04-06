@@ -159,13 +159,13 @@ function AssetSelector({selectedToken, onSelect}: {
     onSelect: (asset: TokenDetails) => void
 }) {
     return <div className="w-24">
-        <select onChange={(e) => {
+        <select value={selectedToken?.name || ""} onChange={(e) => {
             const selectedToken = SUPPORTED_TOKENS.find(x => x.name === e.target.value)
             if(selectedToken){
                 onSelect(selectedToken)
             }
         }} id="countries" className="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-            {SUPPORTED_TOKENS.map(token => <option key={token.name} selected={selectedToken.name == token.name} > 
+            {SUPPORTED_TOKENS.map(token => <option value={selectedToken.name} key={token.name} selected={selectedToken.name == token.name} > 
                 {token.name}
             </option>)}
         </select>
