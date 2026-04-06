@@ -33,7 +33,7 @@ export const authConfig = {
                 where: {
                     sub: account?.providerAccountId ?? ""
                 }
-            })
+            }); 
             if(user){
                 token.uid = user.id
             }

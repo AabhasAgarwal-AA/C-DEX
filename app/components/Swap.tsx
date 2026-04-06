@@ -159,7 +159,7 @@ function AssetSelector({selectedToken, onSelect}: {
     onSelect: (asset: TokenDetails) => void
 }) {
     return <div className="w-24">
-        <select value={selectedToken?.name || ""} onChange={(e) => {
+        <select onChange={(e) => {
             const selectedToken = SUPPORTED_TOKENS.find(x => x.name === e.target.value)
             if(selectedToken){
                 onSelect(selectedToken)

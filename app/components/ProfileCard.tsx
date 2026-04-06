@@ -2,11 +2,14 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { TabButton } from "./Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swap } from "./Swap";
 import { Assets } from "./Assests";
 import { Greeting } from "./Greeting";
 import { useTokens } from "../api/hooks/useTokens";
+import { Withdraw } from "./Withdraw";
+import { AddFunds } from "./AddFunds";
+import { Send } from "./Send";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"; 
 const tabs: {id: Tab, name: string}[] = [
@@ -24,14 +27,18 @@ export const ProfileCard = ({publicKey}: {publicKey: string}) => {
     const [selectedTab, setSelectedTab] = useState<Tab>("tokens");
     const { tokenBalances, loading } = useTokens(publicKey);
 
-    if(session.status === "loading"){
-        return <div>
-            Loading...
-        </div>
+    useEffect(() => {
+        if (session.status === "unauthenticated") {
+            router.push("/");
+        }
+    }, [session.status, router]);
+
+    if (session.status === "loading") {
+        return <div className="flex justify-center py-8">Loading...</div>;
     }
 
-    if(! session.data?.user){
-        router.push("/");
+    if(!session.data?.user){
+        // router.push("/");
         return null; 
     }
 
@@ -47,9 +54,15 @@ export const ProfileCard = ({publicKey}: {publicKey: string}) => {
 
             {/* {JSON.stringify(session.data.user)}; */}
             <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}><Assets tokenBalances={tokenBalances} loading={loading} publicKey={publicKey} /></div>
-        <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}><Swap tokenBalances={tokenBalances} publicKey={publicKey} /></div>  
+
+            <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}><Swap tokenBalances={tokenBalances} publicKey={publicKey} /></div> 
+
+            <div className={`${selectedTab == "withdraw" ? "visible" : "hidden"}`}><Withdraw /></div> 
+
+            <div className={`${selectedTab == "add_funds" ? "visible" : "hidden"}`}><AddFunds publicKey={publicKey} /> </div>
+
+            <div className={`${selectedTab == "send" ? "visible" : "hidden"}`}><Send tokenBalances={tokenBalances} publicKey={publicKey} /></div>
         
         </div>
     </div>
 }
-
