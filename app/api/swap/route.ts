@@ -30,20 +30,7 @@ export async function POST(req: NextRequest){
         }, {
             status: 401 
         });
-    }
-    // const {swapTransaction} = await (
-    //     await fetch('https://lite-api.jup.ag/swap/v1/quote', {
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }, 
-    //         body: JSON.stringify({
-    //             quoteResponse: data.quoteResponse, 
-    //             userPublicKey: solWallet.publicKey, 
-    //             wrapAndUnwrapSol: true, 
-    //         })
-    //     })
-    // ).json(); 
+    } 
 
     const { swapTransaction } = await (
         await fetch('https://lite-api.jup.ag/swap/v1/swap', {

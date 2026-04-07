@@ -1,9 +1,10 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { SUPPORTED_TOKENS, TokenDetails } from "../lib/tokens";
 import { TokenWithBalance } from "../api/hooks/useTokens";
 import { PrimaryButton } from "./Button";
 import axios from "axios";
+import { AssetSelector } from "./AssetSelector";
 
 export function Swap({publicKey, tokenBalances} :{
     publicKey: string, 
@@ -18,19 +19,21 @@ export function Swap({publicKey, tokenBalances} :{
     const [baseAmount, setBaseAmount] = useState<string>("");
     const [quoteAmount, setQuoteAmount] = useState<string>("");
     const [fetchingQuote, setFetchingQuote] = useState(false);
-    const [quoteRespose, setQuoteResponse] = useState(null); 
+    const [quoteResponse, setQuoteResponse] = useState(null); 
 
     useEffect(() => {
         if (!baseAmount || isNaN(Number(baseAmount))) {
             setQuoteAmount("");
             return;
         }
+        if (baseAsset === quoteAsset) {
+            alert("you are matching the same tokens, please change them");
+            return;
+        }
         const fetchQuote = async () => {
             try {
                 setFetchingQuote(true);
-
                 const amount = Math.floor(Number(baseAmount) * 10 ** baseAsset.decimals).toString();
-
                 axios.get(`https://lite-api.jup.ag/swap/v1/quote?inputMint=${baseAsset.mint}&outputMint=${quoteAsset.mint}&amount=${amount}&slippageBps=50`).then(res => {
                     setQuoteAmount((Number(res.data.outAmount) / 10 ** quoteAsset.decimals).toString());
                     setQuoteResponse(res.data);
@@ -103,7 +106,7 @@ export function Swap({publicKey, tokenBalances} :{
             <PrimaryButton onClick={ async () => {
                 try{
                     const res = await axios.post("/api/swap", {
-                        quoteRespose
+                        quoteResponse
                     }); 
                     if(res.data.txnId){
                         alert("Swap done");
@@ -144,32 +147,13 @@ function SwapInputRow({ amount, inputDisabled, inputLoading, onAmountChange, onS
             <div className="text-sx font-semibold mb-1">
                 {title}
             </div>
-            <AssetSelector selectedToken={selectedToken} onSelect={() => {onSelect}} />
+            <AssetSelector selectedToken={selectedToken} onSelect={onSelect} />
             {subtitle}
         </div>
         <div>
-            <input disabled={inputDisabled} onChange={(e) => onAmountChange?.(e.target.value)} placeholder="0" type="text" className="bg-slate-50 p-5 outline-none text-4xl" dir="rtl" value={amount}> 
+            <input disabled={inputDisabled} onChange={(e) => onAmountChange?.(e.target.value)} placeholder={selectedToken.name} type="text" className="bg-slate-50 p-5 outline-none text-4xl" dir="rtl" value={amount}> 
             </input>
         </div>
-    </div>
-}
-
-function AssetSelector({selectedToken, onSelect}: {
-    selectedToken: TokenDetails, 
-    onSelect: (asset: TokenDetails) => void
-}) {
-    return <div className="w-24">
-        <select onChange={(e) => {
-            const selectedToken = SUPPORTED_TOKENS.find(x => x.name === e.target.value)
-            if(selectedToken){
-                onSelect(selectedToken)
-            }
-        }} id="countries" className="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-            {SUPPORTED_TOKENS.map(token => <option value={selectedToken.name} key={token.name} selected={selectedToken.name == token.name} > 
-                {token.name}
-            </option>)}
-        </select>
-
     </div>
 }
 
@@ -201,3 +185,21 @@ const Spinner = ({ className }: { className?: string }) => (
         />
     </svg>
 );
+// function AssetSelector({ selectedToken, onSelect }: {
+//     selectedToken: TokenDetails,
+//     onSelect: (asset: TokenDetails) => void
+// }) {
+//     return <div className="w-24">
+//         <select onChange={(e) => {
+//             const selectedToken = SUPPORTED_TOKENS.find(x => x.name === e.target.value)
+//             if (selectedToken) {
+//                 onSelect(selectedToken)
+//             }
+//         }} >
+//             {SUPPORTED_TOKENS.map(token => <option value={selectedToken.name} key={token.name} selected={selectedToken.name == token.name} >
+//                 {token.name}
+//             </option>)}
+//         </select>
+
+//     </div>
+// }
