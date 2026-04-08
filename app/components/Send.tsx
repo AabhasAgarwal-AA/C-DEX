@@ -16,6 +16,7 @@ export function Send({tokenBalances, publicKey}: {
     const [address, setAddress] = useState("");
     const [loading, setLoading] = useState(false);
     const [quoteAsset, setQuoteAsset] = useState(SUPPORTED_TOKENS[0]); 
+    const [amount, setAmount] = useState("");
 
 
     return <div className="p-4 text-center">
@@ -39,6 +40,13 @@ export function Send({tokenBalances, publicKey}: {
                     setQuoteAsset(asset)
                 }}
             />
+            <input
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="0"
+                type="text"
+                className="block mx-auto mb-2.5 text-sm font-medium text-heading border border-default-medium text-center p-2">
+            </input>
             <PrimaryButton 
                 disabled={loading}
                 onClick={async () => {
@@ -49,7 +57,9 @@ export function Send({tokenBalances, publicKey}: {
                     setLoading(true)
                     try {
                         const res = await axios.post("/api/send", {
-                            address
+                            address, 
+                            quoteAsset, 
+                            amount 
                         })
                         if(res.data.txnId){
                             alert("Transaction successful")

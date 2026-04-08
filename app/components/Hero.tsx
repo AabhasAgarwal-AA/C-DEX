@@ -1,24 +1,11 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { styles } from "./styles";
 
 export const Hero = () => {
     const session = useSession();
     const router = useRouter();
-    const styleRef = useRef<HTMLStyleElement | null>(null);
-
-    useEffect(() => {
-        if (!styleRef.current) {
-            const el = document.createElement("style");
-            el.textContent = styles;
-            document.head.appendChild(el);
-            styleRef.current = el;
-        }
-        return () => { styleRef.current?.remove(); styleRef.current = null; };
-    }, []);
-
+    
     const handlePrimary = () => {
         if (session.data?.user) router.push("/dashboard");
         else signIn("google");
