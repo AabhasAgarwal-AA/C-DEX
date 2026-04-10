@@ -15,7 +15,7 @@ export async function getSupportedTokens(): Promise<TokenDetails[]> {
     if (!LAST_UPDATED || now - LAST_UPDATED > TOKEN_PRICE_REFRESH_INTERVAL){
         try {
 
-            const response = await axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h");
+            const response = await axios.get(process.env.TOKEN_PRICE_API ?? "");
             const data = response.data; 
 
             const solana = data.find((coin: any) => coin.id == "solana"); 

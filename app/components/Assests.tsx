@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { TokenWithBalance, useTokens } from "../api/hooks/useTokens";
+import { TokenWithBalance } from "../api/hooks/useTokens";
 import { PrimaryButton } from "./Button";
 import { TokenList } from "./TokenList";
 
@@ -14,7 +14,6 @@ export
         loading: boolean
     }) {
     const [copied, setCopied] = useState(false);
-
 
     useEffect(() => {
         if (copied) {

@@ -61,7 +61,7 @@ export function Send({tokenBalances, publicKey}: {
                             quoteAsset, 
                             amount 
                         })
-                        if(res.data.txnId){
+                        if (res.data.signature){
                             alert("Transaction successful")
                         }
 

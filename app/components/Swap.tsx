@@ -19,7 +19,7 @@ export function Swap({publicKey, tokenBalances} :{
     const [baseAmount, setBaseAmount] = useState<string>("");
     const [quoteAmount, setQuoteAmount] = useState<string>("");
     const [fetchingQuote, setFetchingQuote] = useState(false);
-    const [quoteResponse, setQuoteResponse] = useState(null); 
+    // const [quoteResponse, setQuoteResponse] = useState(null); 
 
     useEffect(() => {
         if (!baseAmount || isNaN(Number(baseAmount))) {
@@ -36,7 +36,7 @@ export function Swap({publicKey, tokenBalances} :{
                 const amount = Math.floor(Number(baseAmount) * 10 ** baseAsset.decimals).toString();
                 axios.get(`https://lite-api.jup.ag/swap/v1/quote?inputMint=${baseAsset.mint}&outputMint=${quoteAsset.mint}&amount=${amount}&slippageBps=50`).then(res => {
                     setQuoteAmount((Number(res.data.outAmount) / 10 ** quoteAsset.decimals).toString());
-                    setQuoteResponse(res.data);
+                    // setQuoteResponse(res.data);
                 }); 
             } catch (err) {
                 console.error("Quote error:", err);
@@ -106,7 +106,10 @@ export function Swap({publicKey, tokenBalances} :{
             <PrimaryButton onClick={ async () => {
                 try{
                     const res = await axios.post("/api/swap", {
-                        quoteResponse
+                        inputMint: baseAsset.mint,
+                        outputMint: quoteAsset.mint,
+                        amount: baseAmount,
+                        decimals: baseAsset.decimals
                     }); 
                     if(res.data.txnId){
                         alert("Swap done");
@@ -185,21 +188,3 @@ const Spinner = ({ className }: { className?: string }) => (
         />
     </svg>
 );
-// function AssetSelector({ selectedToken, onSelect }: {
-//     selectedToken: TokenDetails,
-//     onSelect: (asset: TokenDetails) => void
-// }) {
-//     return <div className="w-24">
-//         <select onChange={(e) => {
-//             const selectedToken = SUPPORTED_TOKENS.find(x => x.name === e.target.value)
-//             if (selectedToken) {
-//                 onSelect(selectedToken)
-//             }
-//         }} >
-//             {SUPPORTED_TOKENS.map(token => <option value={selectedToken.name} key={token.name} selected={selectedToken.name == token.name} >
-//                 {token.name}
-//             </option>)}
-//         </select>
-
-//     </div>
-// }
